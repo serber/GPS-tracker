@@ -1,17 +1,20 @@
 {
-  "idf.currentSetup": "/Users/albert/.espressif/v6.0/esp-idf",
-  "idf.openOcdConfigs": [
-    "interface/ftdi/esp_ftdi.cfg",
-    "target/esp32.cfg"
-  ],
-  "idf.port": "detect",
-  "idf.customExtraVars": {
-    "IDF_TARGET": "esp32"
-  },
-  "clangd.path": "/Users/albert/.espressif/tools/esp-clang/esp-20.1.1_20250829/esp-clang/bin/clangd",
-  "clangd.arguments": [
-    "--background-index",
-    "--query-driver=**",
-    "--compile-commands-dir=/Users/albert/Documents/sources/GPS-tracker/build"
-  ]
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.openOcdConfigs": [
+        "interface/ftdi/esp_ftdi.cfg",
+        "target/esp32s3.cfg"
+    ],
+    "idf.customExtraVars": {
+        "IDF_TARGET": "esp32s3"
+    },
+    "idf.flashType": "UART",
+    "clangd.arguments": [
+        "--background-index",
+        "--query-driver=**",
+        "--compile-commands-dir=build"
+    ],
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "cmake.configureOnOpen": false,
+    "idf.currentSetup": "~/.espressif/v6.0/esp-idf",
+    "idf.port": "/dev/tty.usbserial-0001"
 }

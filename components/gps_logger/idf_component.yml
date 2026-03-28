@@ -1,0 +1,3 @@
+dependencies:
+  idf: ">=5.0"
+  cinderblocks/esp_tinygpsplusplus: "^1.1.1"
