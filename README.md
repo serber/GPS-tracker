@@ -44,13 +44,13 @@ These values live in `components/gps_logger/include/gps_logger.hpp`.
 Each day is written to `/sdcard/YYYYMMDD.csv` with the header:
 
 ```text
-date,time,latitude,longitude
+date,time,latitude,longitude,altitude_m,speed_kmph,course_deg
 ```
 
 Each row is formatted as:
 
 ```text
-YYYY.MM.DD,HH:MM:SS,55.75580000,37.61730000
+YYYY.MM.DD,HH:MM:SS,55.75580000,37.61730000,156.20,12.40,84.50
 ```
 
 ## Development Notes
