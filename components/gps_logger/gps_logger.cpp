@@ -43,6 +43,9 @@ struct gps_fix
     int second = 0;
     double latitude = 0.0;
     double longitude = 0.0;
+    double altitude_m = 0.0;
+    double speed_kmph = 0.0;
+    double course_deg = 0.0;
     uint32_t satellites = 0;
     double hdop = 0.0;
 
@@ -79,6 +82,9 @@ bool extract_fix(TinyGPSPlus &gps, gps_fix *fix)
     fix->second = gps.time.second();
     fix->latitude = gps.location.lat();
     fix->longitude = gps.location.lng();
+    fix->altitude_m = gps.altitude.isValid() ? gps.altitude.meters() : 0.0;
+    fix->speed_kmph = gps.speed.isValid() ? gps.speed.kmph() : 0.0;
+    fix->course_deg = gps.course.isValid() ? gps.course.deg() : 0.0;
     fix->satellites = gps.satellites.isValid() ? gps.satellites.value() : 0;
     fix->hdop = gps.hdop.isValid() ? gps.hdop.hdop() : 0.0;
     return true;
@@ -226,14 +232,14 @@ public:
         }
 
         if (!file_exists) {
-            std::fputs("date,time,latitude,longitude\n", file);
+            std::fputs("date,time,latitude,longitude,altitude_m,speed_kmph,course_deg\n", file);
         }
 
-        char line[128];
+        char line[192];
         std::snprintf(
             line,
             sizeof(line),
-            "%04d.%02d.%02d,%02d:%02d:%02d,%.8f,%.8f\n",
+            "%04d.%02d.%02d,%02d:%02d:%02d,%.8f,%.8f,%.2f,%.2f,%.2f\n",
             fix.year,
             fix.month,
             fix.day,
@@ -241,7 +247,10 @@ public:
             fix.minute,
             fix.second,
             fix.latitude,
-            fix.longitude);
+            fix.longitude,
+            fix.altitude_m,
+            fix.speed_kmph,
+            fix.course_deg);
 
         const bool write_failed = std::fputs(line, file) < 0 || std::fflush(file) != 0;
         std::fclose(file);
@@ -252,7 +261,7 @@ public:
 
         ESP_LOGI(
             TAG,
-            "logged fix %04d-%02d-%02d %02d:%02d:%02d lat=%.8f lon=%.8f sats=%" PRIu32 " hdop=%.1f",
+            "logged fix %04d-%02d-%02d %02d:%02d:%02d lat=%.8f lon=%.8f alt=%.2fm speed=%.2fkm/h course=%.2fdeg sats=%" PRIu32 " hdop=%.1f",
             fix.year,
             fix.month,
             fix.day,
@@ -261,6 +270,9 @@ public:
             fix.second,
             fix.latitude,
             fix.longitude,
+            fix.altitude_m,
+            fix.speed_kmph,
+            fix.course_deg,
             fix.satellites,
             fix.hdop);
         return ESP_OK;
